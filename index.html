@@ -1,103 +1,142 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-    <meta charset="utf-8">  
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />  
-    <title></title>  
-    <script src="js/mui.min.js"></script>  
-    <link href="css/mui.min.css" rel="stylesheet"/>  
-    <style type="text/css">  
-        body{  
-            background-color: #ccc;  
-        }  
-        .mui-off-canvas-wrap{  
-            max-width: 25rem;  
-            margin: 0 auto; 
-        }  
-    </style>  
-</head>  
-<body>  
-    <!-- 侧滑导航根容器 -->    
-    <div class="mui-off-canvas-wrap mui-draggable mui-slide-in">    
-      <!-- 菜单容器 -->    
-      <aside class="mui-off-canvas-right" style="background-color: #ccc;">    
-        <div id="offCanvasSideScroll" class="mui-scroll-wrapper">    
-          <div class="mui-scroll" style="background-color: #fff;">   
-            <!-- 菜单具体展示内容 -->    
-            <ul class="mui-table-view mui-table-view-menu">
-            		<li class="mui-table-view-cell"><a href="" class="mui-table-view-cell-a">首页</a></li>
-            		<li class="mui-table-view-cell" ><a href="view/main.html" class="mui-table-view-cell-a">我的</a></li>
-            		<li class="mui-table-view-cell"><a href="" class="mui-table-view-cell-a">关于我们</a></li>
-            		<li class="mui-table-view-cell"><a href="" class="mui-table-view-cell-a">联系我们</a></li>
-            </ul>
-          </div>    
-        </div>    
-      </aside>    
-      <!-- 主页面容器 -->    
-      <div class="mui-inner-wrap">    
-        <!-- 主页面标题 -->   
-        <header class="mui-bar mui-bar-nav">
-        	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-          <h1 class="mui-title">博客</h1>    
-        </header>    
-        <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">    
-          <div class="mui-scroll">    
-            <!-- 主界面具体展示内容 -->    
-            <div class="mui-content">
-            	<ul class="mui-table-view mui-table-view-content">
-            		<li class="mui-table-view-cell"><a href="setting.html">设置</a></li>
-            		<li class="mui-table-view-cell">2</li>
-            		<li class="mui-table-view-cell">3</li>
-            		<li class="mui-table-view-cell">4</li>
-            		<li class="mui-table-view-cell">5</li>
-            		<li class="mui-table-view-cell">1</li>
-            		<li class="mui-table-view-cell">2</li>
-            		<li class="mui-table-view-cell">3</li>
-            		<li class="mui-table-view-cell">4</li>
-            		<li class="mui-table-view-cell">5</li>
-            		<li class="mui-table-view-cell">1</li>
-            		<li class="mui-table-view-cell">2</li>
-            		<li class="mui-table-view-cell">3</li>
-            		<li class="mui-table-view-cell">4</li>
-            		<li class="mui-table-view-cell">5</li>
-            		<li class="mui-table-view-cell">1</li>
-            		<li class="mui-table-view-cell">2</li>
-            		<li class="mui-table-view-cell">3</li>
-            		<li class="mui-table-view-cell">4</li>
-            		<li class="mui-table-view-cell">5</li>
-            	</ul>
-            </div> 
-          </div>    
-        </div>      
-      </div>    
-    </div>  
-      
-    <script type="text/javascript" charset="utf-8">  
-    	mui.init({
-			//监听
-			gestureConfig:{
-		        swipeup:true,
-		        swipedown:true,
-		        dragstart:true,
-		        drag:true,
-		        dragend:true
-		    }
-		});
-        window.onload = function(){  
-            mui('#offCanvasSideScroll').scroll();    
-            mui('#offCanvasContentScroll').scroll();   
-        } 
-        //上拉
-		document.addEventListener("swipeup",function(){
-		    mui.toast('上拉');
-		})
-		mui(".mui-table-view-menu").on('tap','.mui-table-view-cell-a',function(){
-		  //获取ul
-		  var url = this.getAttribute("href");
-		  mui.openWindow({
-		    url:url
-		  });
-		}) 
-    </script>  
-</body>  
-</html>  
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style type="text/css">
+			.mui-content>.mui-table-view:first-child {
+				margin-top: -1px;
+			}
+			.mui-table-view-chevron .mui-table-view-cell{
+				padding-right: 1rem;
+			}
+			.detail{
+				display: flex;
+				height: 7rem;
+			}
+			.div_left{
+				flex: 4;
+				
+			}
+			.img{
+				height: 5rem;
+				margin-top: 0.5rem;
+			}
+			.img img{
+				width: 100%;
+				height: 100%;
+			}
+			.timer{
+				text-align: center;
+				margin-top: 0.4rem;
+			}
+			.div_right{
+				flex: 6;
+			}
+			.title{
+				margin: 0.5rem 0 0.8rem 1rem;
+				font-size: 22px;
+			}
+			.tags{
+				color: #aaa;
+				margin-left: 1rem;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 3;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">下拉刷新和上1来加载 单webview模式</h1>
+		</header>
+		<!--下拉刷新容器-->
+		<div class="mui-content">
+			<!--<div class="mui-slider">
+			  	<div class="mui-slider-group mui-slider-loop">
+				    <!--支持循环，需要重复图片节点-->
+				    <!--<div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="images/2.jpg" /></a></div>
+				    <div class="mui-slider-item"><a href="#"><img src="images/1.jpg" /></a></div>
+				    <div class="mui-slider-item"><a href="#"><img src="images/2.jpg" /></a></div>-->
+				    <!--支持循环，需要重复图片节点-->
+				    <!--<div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="images/1.jpg" /></a></div>-->
+			  	<!--</div>-->
+			<!--</div>-->
+			<div id="pullrefresh">
+				<!--数据列表-->
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell">
+				        <div class="detail">
+				        	<div class="div_left"><div class="img"><img src="images/1.jpg"/></div><div class="timer">2018-9-8</div></div>
+				        	<div class="div_right"><div class="title">yii2小部件</div><div class="tags">Yii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widgetYii2,小部件,widget	Yii2,小部件,widget	Yii2,小部件,widget</div></div>
+				        </div>
+				   </li>
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init({
+//				pullRefresh: {
+//					container: '#pullrefresh',
+//					down: {
+//						style:'circle',
+//						 color:'red', //可选，默认“#2BD009” 下拉刷新控件颜色
+//						callback: pulldownRefresh
+//					},
+//					up: {
+//						auto:true,
+//						contentrefresh: '正在加载...',
+//						callback: pullupRefresh
+//					}
+//				}
+			});
+			document.addEventListener("swipeup",function(){
+			    var nav=document.getElementsByClassName('mui-bar-tab')[0];
+			    var parentnod = document.body.querySelector('.mui-table-view');
+			    if(nav){
+			    	parentnod.removeChild(nav);
+			    }
+			});
+			
+			var count = 0;
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullup((++count > 2)); //参数为true代表没有更多数据了。
+					var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+					var newCount = cells.length>0?5:20;//首次加载20条，满屏
+					for (var i = cells.length, len = i + newCount; i < len; i++) {
+						var li = document.createElement('li');
+						li.className = 'mui-table-view-cell';
+						
+						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
+						table.appendChild(li);
+					}
+				}, 1500);
+			}
+
+			
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			var counts=0;
+			function pulldownRefresh() {
+				showMenu();
+				mui('#pullrefresh').pullRefresh().endPulldown(++counts>0);
+				
+			}
+
+		</script>
+	</body>
+
+</html>

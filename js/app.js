@@ -1,148 +1,136 @@
-/**
- * 演示程序当前的 “注册/登录” 等操作，是基于 “本地存储” 完成的
- * 当您要参考这个演示程序进行相关 app 的开发时，
- * 请注意将相关方法调整成 “基于服务端Service” 的实现。
- **/
-(function($, owner) {
-	/**
-	 * 用户登录
-	 **/
-	owner.login = function(loginInfo, callback) {
-		callback = callback || $.noop;
-		loginInfo = loginInfo || {};
-		loginInfo.account = loginInfo.account || '';
-		loginInfo.password = loginInfo.password || '';
-		if (loginInfo.account.length < 5) {
-			return callback('账号最短为 5 个字符');
-		}
-		if (loginInfo.password.length < 6) {
-			return callback('密码最短为 6 个字符');
-		}
-		var users = JSON.parse(localStorage.getItem('$users') || '[]');
-		var authed = users.some(function(user) {
-			return loginInfo.account == user.account && loginInfo.password == user.password;
-		});
-		if (authed) {
-			return owner.createState(loginInfo.account, callback);
-		} else {
-			return callback('用户名或密码错误');
-		}
-	};
+var showMenu=function() {
+	var menuStr='<a class="mui-tab-item mui-active" id="index">\n' +
+    '\t\t\t\t\t\t<span class="mui-icon mui-icon-home-filled"></span>\n' +
+    '\t\t\t\t\t\t<span class="mui-tab-label">首页</span>\n' +
+    '\t\t\t\t\t</a>\n' +
+    '\t\t\t\t\t<a class="mui-tab-item" id="mine">\n' +
+    '\t\t\t\t\t\t<span class="mui-icon mui-icon-contact"></span>\n' +
+    '\t\t\t\t\t\t<span class="mui-tab-label">我的</span>\n' +
+    '\t\t\t\t\t</a>\n' +
+    '\t\t\t\t\t<a class="mui-tab-item" id="about">\n' +
+    '\t\t\t\t\t\t<span class="mui-icon mui-icon-spinner mui-spin"></span>\n' +
+    '\t\t\t\t\t\t<span class="mui-tab-label">关于</span>\n' +
+    '\t\t\t\t\t</a>\n' +
+    '\t\t\t\t\t<a class="mui-tab-item" id="settings">\n' +
+    '\t\t\t\t\t\t<span class="mui-icon mui-icon-gear-filled"></span>\n' +
+    '\t\t\t\t\t\t<span class="mui-tab-label">设置</span>\n' +
+    '\t\t\t\t\t</a>';
+	var table = document.body.querySelector('.mui-table-view');
+	var nav = document.createElement('nav');
+	nav.className = 'mui-bar mui-bar-tab';
+	nav.innerHTML = menuStr;
+	table.insertBefore(nav, table.firstChild);
+}
 
-	owner.createState = function(name, callback) {
-		var state = owner.getState();
-		state.account = name;
-		state.token = "token123456789";
-		owner.setState(state);
-		return callback();
-	};
 
-	/**
-	 * 新用户注册
-	 **/
-	owner.reg = function(regInfo, callback) {
-		callback = callback || $.noop;
-		regInfo = regInfo || {};
-		regInfo.account = regInfo.account || '';
-		regInfo.password = regInfo.password || '';
-		if (regInfo.account.length < 5) {
-			return callback('用户名最短需要 5 个字符');
-		}
-		if (regInfo.password.length < 6) {
-			return callback('密码最短需要 6 个字符');
-		}
-		if (!checkEmail(regInfo.email)) {
-			return callback('邮箱地址不合法');
-		}
-		var users = JSON.parse(localStorage.getItem('$users') || '[]');
-		users.push(regInfo);
-		localStorage.setItem('$users', JSON.stringify(users));
-		return callback();
-	};
 
-	/**
-	 * 获取当前状态
-	 **/
-	owner.getState = function() {
-		var stateText = localStorage.getItem('$state') || "{}";
-		return JSON.parse(stateText);
-	};
 
-	/**
-	 * 设置当前状态
-	 **/
-	owner.setState = function(state) {
-		state = state || {};
-		localStorage.setItem('$state', JSON.stringify(state));
-		//var settings = owner.getSettings();
-		//settings.gestures = '';
-		//owner.setSettings(settings);
-	};
 
-	var checkEmail = function(email) {
-		email = email || '';
-		return (email.length > 3 && email.indexOf('@') > -1);
-	};
 
-	/**
-	 * 找回密码
-	 **/
-	owner.forgetPassword = function(email, callback) {
-		callback = callback || $.noop;
-		if (!checkEmail(email)) {
-			return callback('邮箱地址不合法');
-		}
-		return callback(null, '新的随机密码已经发送到您的邮箱，请查收邮件。');
-	};
 
-	/**
-	 * 获取应用本地配置
-	 **/
-	owner.setSettings = function(settings) {
-		settings = settings || {};
-		localStorage.setItem('$settings', JSON.stringify(settings));
-	}
 
-	/**
-	 * 设置应用本地配置
-	 **/
-	owner.getSettings = function() {
-			var settingsText = localStorage.getItem('$settings') || "{}";
-			return JSON.parse(settingsText);
-		}
-		/**
-		 * 获取本地是否安装客户端
-		 **/
-	owner.isInstalled = function(id) {
-		if (id === 'qihoo' && mui.os.plus) {
-			return true;
-		}
-		if (mui.os.android) {
-			var main = plus.android.runtimeMainActivity();
-			var packageManager = main.getPackageManager();
-			var PackageManager = plus.android.importClass(packageManager)
-			var packageName = {
-				"qq": "com.tencent.mobileqq",
-				"weixin": "com.tencent.mm",
-				"sinaweibo": "com.sina.weibo"
-			}
-			try {
-				return packageManager.getPackageInfo(packageName[id], PackageManager.GET_ACTIVITIES);
-			} catch (e) {}
-		} else {
-			switch (id) {
-				case "qq":
-					var TencentOAuth = plus.ios.import("TencentOAuth");
-					return TencentOAuth.iphoneQQInstalled();
-				case "weixin":
-					var WXApi = plus.ios.import("WXApi");
-					return WXApi.isWXAppInstalled()
-				case "sinaweibo":
-					var SinaAPI = plus.ios.import("WeiboSDK");
-					return SinaAPI.isWeiboAppInstalled()
-				default:
-					break;
-			}
-		}
-	}
-}(mui, window.app = {}));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var as = 'pop-in'; // 默认窗口动画
+var _openw = null;
+// 预创建二级页面
+var preate = {};
+//打开新页面
+function clicked(id, param, a, s) {
+  var obj = {
+    preate: true
+  };
+  if(_openw) {
+    return;
+  }
+  a || (a = as);
+  _openw = preate[id];
+  if(_openw) {
+    _openw.showded = true;
+    _openw.show(a, null, function() {
+      _openw = null; //避免快速点击打开多个页面
+    });
+  } else {
+    var wa = plus.nativeUI.showWaiting();
+    obj = mui.extend(obj, param);
+    _openw = plus.webview.create(id, id, {
+      scrollIndicator: 'none',
+      scalable: false,
+      popGesture: 'hide'
+    }, obj);
+    preate[id] = _openw;
+    _openw.setStyle({
+      'popGesture': 'none'
+    });
+    _openw.addEventListener('loaded', function() { //页面加载完成后才显示
+      setTimeout(function() { //延后显示可避免低端机上动画时白屏
+        wa.close();
+        _openw.showded = true;
+        s || _openw.show(a, null, function() {
+          _openw = null; //避免快速点击打开多个页面
+        });
+        s && (_openw = null); //避免s模式下变量无法重置
+      }, 10);
+    }, false);
+    _openw.addEventListener('hide', function() {
+      _openw && (_openw.showded = true);
+      _openw = null;
+    }, false);
+    _openw.addEventListener('close', function() { //页面关闭后可再次打开
+      _openw = null;
+      preate[id] && (preate[id] = null); //兼容窗口的关闭
+    }, false);
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "main.html": {
+    "refer": [
+      "setting.html"
+    ]
+  },
+  "login.html": {
+    "refer": [
+      "main.html",
+      "reg.html",
+      "forget_password.html"
+    ]
+  },
+  "index.html": {
+    "refer": [
+      "view/login.html",
+      "view/main.html"
+    ]
+  },
+  "view/main.html": {
+    "refer": [
+      "view/setting.html",
+      "view/login.html"
+    ]
+  },
+  "view/login.html": {
+    "refer": [
+      "view/main.html"
+    ]
+  }
+}
