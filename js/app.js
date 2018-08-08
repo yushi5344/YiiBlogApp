@@ -21,9 +21,57 @@ var showMenu=function() {
 	nav.innerHTML = menuStr;
 	table.insertBefore(nav, table.firstChild);
 }
-
-
-
+var request=function(type,params,method){
+	var result;
+	mui.ajax({
+		url:config.server+method,
+		type:type,
+		dataType:'json',
+		async : false,
+		data:params,
+		success:function(data){
+			console.log(JSON.stringify(data));
+			if(data.success==false){
+				mui.alert(data.message);
+				result=data;
+			}else{
+				result=data;
+			}
+		},
+		error:function(xhr,type,errorThrown){
+			console.log(xhr);
+		}
+	});
+	return result;
+}
+var queryPosts=function(page){
+	var arr={
+		page:page
+	};
+	var data=request('GET', arr,config.apimethod.posts);
+	return data.data;
+}
+var queryPostsDetail=function(articleId){
+	var arr={};
+	var data=request('GET', arr,config.apimethod.posts+'/'+articleId);
+	return data.data;
+}
+var  formatDateTime=function(timeStamp) {
+	var date = new Date();
+	date.setTime(timeStamp * 1000);
+	var y = date.getFullYear();
+	var m = date.getMonth() + 1;
+	m = m < 10 ? ('0' + m) : m;
+	var d = date.getDate();
+	d = d < 10 ? ('0' + d) : d;
+	var h = date.getHours();
+	h = h < 10 ? ('0' + h) : h;
+	var minute = date.getMinutes();
+	var second = date.getSeconds();
+	minute = minute < 10 ? ('0' + minute) : minute;
+	second = second < 10 ? ('0' + second) : second;
+	return y + '-' + m + '-' + d;
+};
 
 
 
