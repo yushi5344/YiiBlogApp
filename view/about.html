@@ -7,16 +7,14 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<style>
-			.mui-content{
-				margin: 0.8rem;
-			}
+			
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title" id="title"></h1>
+			<h1 class="mui-title" id="title">关于我们</h1>
 		</header>
 		
 		<div class="mui-content">
@@ -28,10 +26,7 @@
 		<script type="text/javascript">
 			mui.init();
 			mui.plusReady(function(){
-				var articleId = plus.webview.currentWebview().articleId;
-				var data=queryPostsDetail(articleId);
-				document.getElementById('title').innerHTML=data.title;
-				document.getElementsByClassName('mui-content')[0].innerHTML=data.content;
+			
 			});
 		</script>
 	</body>

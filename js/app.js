@@ -1,26 +1,36 @@
+/**
+ * 显示菜单
+ */
 var showMenu=function() {
-	var menuStr='<a class="mui-tab-item mui-active" id="index">\n' +
-    '\t\t\t\t\t\t<span class="mui-icon mui-icon-home-filled"></span>\n' +
-    '\t\t\t\t\t\t<span class="mui-tab-label">首页</span>\n' +
-    '\t\t\t\t\t</a>\n' +
-    '\t\t\t\t\t<a class="mui-tab-item" id="mine">\n' +
-    '\t\t\t\t\t\t<span class="mui-icon mui-icon-contact"></span>\n' +
-    '\t\t\t\t\t\t<span class="mui-tab-label">我的</span>\n' +
-    '\t\t\t\t\t</a>\n' +
-    '\t\t\t\t\t<a class="mui-tab-item" id="about">\n' +
-    '\t\t\t\t\t\t<span class="mui-icon mui-icon-spinner mui-spin"></span>\n' +
-    '\t\t\t\t\t\t<span class="mui-tab-label">关于</span>\n' +
-    '\t\t\t\t\t</a>\n' +
-    '\t\t\t\t\t<a class="mui-tab-item" id="settings">\n' +
-    '\t\t\t\t\t\t<span class="mui-icon mui-icon-gear-filled"></span>\n' +
-    '\t\t\t\t\t\t<span class="mui-tab-label">设置</span>\n' +
-    '\t\t\t\t\t</a>';
+	var menuStr='<a class="mui-tab-item mui-active" id="index.html">\n' +
+    '<span class="mui-icon mui-icon-home-filled"></span>\n' +
+    '<span class="mui-tab-label"">首页</span>\n' +
+    '</a>\n' +
+    '<a class="mui-tab-item" id="view/mine.html">\n' +
+    '<span class="mui-icon mui-icon-contact"></span>\n' +
+    '<span class="mui-tab-label">我的</span>\n' +
+    '</a>\n' +
+    '<a class="mui-tab-item" id="view/about.html">\n' +
+    '<span class="mui-icon mui-icon-spinner mui-spin"></span>\n' +
+    '<span class="mui-tab-label">关于</span>\n' +
+    '</a>\n' +
+    '<a class="mui-tab-item" id="view/setting.html">\n' +
+    '<span class="mui-icon mui-icon-gear-filled"></span>\n' +
+    '<span class="mui-tab-label">设置</span>\n' +
+    '</a>';
 	var table = document.body.querySelector('.mui-table-view');
 	var nav = document.createElement('nav');
 	nav.className = 'mui-bar mui-bar-tab';
 	nav.innerHTML = menuStr;
 	table.insertBefore(nav, table.firstChild);
+	listenMenu();
 }
+/**
+ * 通过ajax同步请求数据
+ * @param {String} type GET或者POST
+ * @param {Object} params 发送的数据
+ * @param {String} method   请求的接口
+ */
 var request=function(type,params,method){
 	var result;
 	mui.ajax({
@@ -44,6 +54,10 @@ var request=function(type,params,method){
 	});
 	return result;
 }
+/**
+ * 获取首页显示内容
+ * @param {String} page  页码
+ */
 var queryPosts=function(page){
 	var arr={
 		page:page
@@ -51,11 +65,19 @@ var queryPosts=function(page){
 	var data=request('GET', arr,config.apimethod.posts);
 	return data.data;
 }
+/**
+ * 根据文章id获取文章详情
+ * @param {Number} articleId  文章Id
+ */
 var queryPostsDetail=function(articleId){
 	var arr={};
 	var data=request('GET', arr,config.apimethod.posts+'/'+articleId);
 	return data.data;
 }
+/**
+ * 格式化时间
+ * @param {Number} timeStamp  时间戳
+ */
 var  formatDateTime=function(timeStamp) {
 	var date = new Date();
 	date.setTime(timeStamp * 1000);
@@ -73,8 +95,15 @@ var  formatDateTime=function(timeStamp) {
 	return y + '-' + m + '-' + d;
 };
 
-
-
+var listenMenu=function(){
+	mui(".mui-bar-tab").on('tap','.mui-tab-item',function(){
+	  	var id = this.getAttribute("id");
+	  	var classname=this.getAttribute('class');
+	  	if(classname.indexOf('mui-active')==-1){
+	  		clicked(id);
+	  	}
+	}) 
+}
 
 
 

@@ -84,7 +84,7 @@
 					container: '#pullrefresh',
 					down: {
 						style:'circle',
-						 color:'red', //可选，默认“#2BD009” 下拉刷新控件颜色
+						 color:'red', //可选， 默认“#2BD009” 下拉刷新控件颜色
 						callback: pulldownRefresh
 					},
 					up: {
@@ -94,6 +94,8 @@
 					}
 				}
 			});
+			var url=window.location.href;
+			console.log(url);
 			document.addEventListener("swipeup",function(){
 			    var nav=document.getElementsByClassName('mui-bar-tab')[0];
 			    var parentnod = document.body.querySelector('.mui-table-view');
@@ -101,6 +103,7 @@
 			    	parentnod.removeChild(nav);
 			    }
 			});
+			
 			mui('.mui-table-view').on('tap', 'li', function() {
 				var id = this.getAttribute('id');
 				clicked('_www/view/detail.html',
